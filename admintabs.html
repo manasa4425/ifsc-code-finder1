@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Login | Bank IFSC</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+    
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg,#0f4c75,#3282b8);
+    color:#fff;
+}
+
+/* ===== HEADER ===== */
+.header{
+    display:flex;
+    align-items:center;
+    padding:15px 20px;
+    background:#06283D;
+    position:relative;
+}
+
+.three-dots{
+    font-size:22px;
+    cursor:pointer;
+    margin-right:15px;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:bold;
+}
+
+/* Dropdown */
+.dropdown{
+    position:absolute;
+    top:60px;
+    left:20px;
+    width:230px;
+    background:#0f4c75;
+    border-radius:8px;
+    display:none;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    overflow:hidden;
+    z-index:1000;
+}
+
+.dropdown a{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 16px;
+    color:#fff;
+    text-decoration:none;
+    border-bottom:1px solid rgba(255,255,255,0.15);
+}
+
+.dropdown a:hover{
+    background:#3282b8;
+}
+
+.dropdown a:last-child{
+    border-bottom:none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+
+    <div class="three-dots" onclick="toggleMenu()">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+    </div>
+
+    <div class="logo">
+        <i class="fa-solid fa-building-columns"></i> Bank IFSC
+    </div>
+
+    <div class="dropdown" id="menu">
+        <a href="admindashboard.php">
+            <i class="fa fa-home"></i> Home
+        </a>
+        <a href="addbank.php">
+            <i class="fa fa-plus-circle"></i> Add Bank
+        </a>
+        <a href="ViewBank.php">
+            <i class="fa fa-eye"></i> View Bank
+        </a>
+        <a href="index.php">
+            <i class="fa fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+
+</div>
+
+<script>
+function toggleMenu(){
+    const menu = document.getElementById("menu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+document.addEventListener("click", function(e){
+    const menu = document.getElementById("menu");
+    const dots = document.querySelector(".three-dots");
+    if(!menu.contains(e.target) && !dots.contains(e.target)){
+        menu.style.display = "none";
+    }
+});
+</script>
+
+</body>
+</html>

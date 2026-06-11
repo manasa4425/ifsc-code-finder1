@@ -1,0 +1,222 @@
+<?php
+session_start();
+include "db.php";
+
+$error = "";
+
+if (isset($_POST['login'])) {
+    $u = mysqli_real_escape_string($conn, $_POST['username']);
+    $p = mysqli_real_escape_string($conn, $_POST['password']);
+
+    $sql = "SELECT * FROM login WHERE username='$u' AND password='$p'";
+    $res = mysqli_query($conn, $sql);
+
+    // 🔴 IMPORTANT: check query execution
+    if (!$res) {
+        die("Query Error: " . mysqli_error($conn));
+    }
+
+    if (mysqli_num_rows($res) == 1) {
+        $_SESSION['admin'] = $u;
+        header("Location: admindashboard.php");
+        exit();
+    } else {
+        $error = "Invalid username or password.";
+    }
+}
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Login | Bank IFSC</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg,#0f4c75,#3282b8);
+    color:#fff;
+}
+
+/* ===== HEADER ===== */
+.header{
+    display:flex;
+    align-items:center;
+    padding:15px 20px;
+    background:#06283D;
+    position:relative;
+}
+
+.three-dots{
+    font-size:22px;
+    cursor:pointer;
+    margin-right:15px;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:bold;
+}
+
+/* Dropdown */
+.dropdown{
+    position:absolute;
+    top:60px;
+    left:20px;
+    width:230px;
+    background:#0f4c75;
+    border-radius:8px;
+    display:none;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    overflow:hidden;
+    z-index:1000;
+}
+
+.dropdown a{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 16px;
+    color:#fff;
+    text-decoration:none;
+    border-bottom:1px solid rgba(255,255,255,0.15);
+}
+
+.dropdown a:hover{
+    background:#3282b8;
+}
+
+.dropdown a:last-child{
+    border-bottom:none;
+}
+
+/* ===== LOGIN BOX ===== */
+.container{
+    min-height: calc(100vh - 70px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.login-card{
+    width:380px;
+    background:rgba(255,255,255,0.15);
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.35);
+    text-align:center;
+}
+
+.login-card h2{
+    margin-bottom:10px;
+}
+
+.login-card span{
+    font-size:14px;
+    opacity:0.9;
+}
+
+.input-group{
+    position:relative;
+    margin-top:18px;
+}
+
+.input-group i{
+    position:absolute;
+    top:50%;
+    left:14px;
+    transform:translateY(-50%);
+    color:#00FFD1;
+}
+
+input{
+    width:100%;
+    padding:12px 14px 12px 42px;
+    border-radius:12px;
+    border:none;
+    outline:none;
+    background:rgba(255,255,255,0.2);
+    color:#fff;
+}
+
+input::placeholder{
+    color:rgba(255,255,255,0.7);
+}
+
+.btn{
+    width:100%;
+    margin-top:22px;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    background:#00FFD1;
+    color:#06283D;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn:hover{
+    background:#00e0bc;
+}
+
+.error{
+    margin-top:15px;
+    padding:10px;
+    background:rgba(255,0,0,0.25);
+    border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+
+    <div class="three-dots" onClick="toggleMenu()">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+    </div>
+
+    <div class="logo">
+        <i class="fa-solid fa-building-columns"></i> Bank IFSC
+    </div>
+
+    <div class="dropdown" id="menu">
+        <a href="index.html"><i class="fa fa-home"></i> Home</a>
+        <a href="about.php"><i class="fa fa-info-circle"></i> About</a>
+        <a href="adminlogin.php"><i class="fa fa-user-shield"></i> Admin Login</a>
+        <a href="banklogin.php"><i class="fa fa-university"></i> Bank Login</a>
+        <a href="customerlogin.php"><i class="fa fa-users"></i> Customer Login</a>
+        <a href="contact.php"><i class="fa fa-phone"></i> Contact</a>
+    </div>
+
+</div>
+
+
+
+<script>
+function toggleMenu(){
+    const menu = document.getElementById("menu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+document.addEventListener("click", function(e){
+    const menu = document.getElementById("menu");
+    const dots = document.querySelector(".three-dots");
+    if(!menu.contains(e.target) && !dots.contains(e.target)){
+        menu.style.display = "none";
+    }
+});
+</script>
+
+</body>
+</html>
